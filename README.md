@@ -3,7 +3,7 @@
 <p align="justify">Ejemplo de un formulario Popin con REACT y la biblioteca de embedded-form-glue, este ejemplo te servira como guia para poder ejecutar el formulario de pago de Izipay dentro de cualquier proyecto que utilice la libreria de REACT. React te ayuda a crear interfaces de usuario interactivas de forma sencilla. Diseña vistas simples para cada estado en tu aplicación, y React se encargará de actualizar y renderizar de manera eficiente los componentes correctos cuando los datos cambien..<p>
 
  <p align="center">
-  <img src="https://raw.githubusercontent.com/izipay-pe/PopIn-PaymentForm-T1.Net/main/images/formulario-popin.png" alt="Formulario"/>                                             
+  <img src="https://github.com/izipay-pe/Imagenes/blob/main/formulario_popin/formulario_popin.png" alt="Formulario"/>                                             
  </p>   
 
 ## Este ejemplo es solo una guía para poder realizar la integración de la pasarela de pagos, puede realizar las modificaciones necesarias para su proyecto.
