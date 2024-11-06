@@ -1,29 +1,44 @@
-# Popin Payment Form React
+# Embedded-PaymentForm-React
 
-<p align="justify">Ejemplo de un formulario Popin con REACT y la biblioteca de embedded-form-glue, este ejemplo te servira como guia para poder ejecutar el formulario de pago de Izipay dentro de cualquier proyecto que utilice la libreria de REACT. React te ayuda a crear interfaces de usuario interactivas de forma sencilla. Diseña vistas simples para cada estado en tu aplicación, y React se encargará de actualizar y renderizar de manera eficiente los componentes correctos cuando los datos cambien..<p>
+## Índice
+
+- [1. Introducción](#1-introducción)
+- [2. Requisitos previos](#2-requisitos-previos)
+- [3. Despliegue](#3-despliegue)
+- [4. Datos de conexión](#4-datos-de-conexión)
+- [5. Transacción de prueba](#5-transacción-de-prueba)
+- [6. Implementación de la IPN](#6-implementación-de-la-ipn)
+- [7. Personalización](#7-personalización)
+- [8. Consideraciones](#8-consideraciones)
+
+## 1. Introducción
+
+En este manual podrás encontrar una guía paso a paso para configurar un proyecto de **[REACT]** con la pasarela de pagos de IZIPAY. Te proporcionaremos instrucciones detalladas y credenciales de prueba para la instalación y configuración del proyecto, permitiéndote trabajar y experimentar de manera segura en tu propio entorno local.
+Este manual está diseñado para ayudarte a comprender el flujo de la integración de la pasarela para ayudarte a aprovechar al máximo tu proyecto y facilitar tu experiencia de desarrollo.
+
+> [!IMPORTANT]
+> En la última actualización se agregaron los campos: **nombre del tarjetahabiente** y **correo electrónico** (Este último campo se visualizará solo si el dato no se envía en la creación del formtoken).
 
 <p align="center">
-  <img src="https://github.com/izipay-pe/Imagenes/blob/main/formulario_popin/Imagen-Formulario-Popin.png?raw=true" alt="Popin" width="250"/>
+  <img src="https://github.com/izipay-pe/Imagenes/blob/main/formulario_popin/Imagen-Formulario-Popin.png?raw=true" alt="Formulario" width="350"/>
 </p>
-
-## Este ejemplo es solo una guía para poder realizar la integración de la pasarela de pagos, puede realizar las modificaciones necesarias para su proyecto.
 
 <a name="Requisitos_Previos"></a>
 
-## Requisitos Previos
+## 2. Requisitos previos
 
-* Acceso al Back Office Vendedor (BOV) y Claves de autenticación. [Guía Aquí](https://github.com/izipay-pe/obtener-credenciales-de-conexion)
-* Debe instalar la [versión de LTS node.js](https://nodejs.org/es/).
+- Comprender el flujo de comunicación de la pasarela. [Información Aquí](https://secure.micuentaweb.pe/doc/es-PE/rest/V4.0/javascript/guide/start.html)
+- Extraer credenciales del Back Office Vendedor. [Guía Aquí](https://github.com/izipay-pe/obtener-credenciales-de-conexion)
+- Debe instalar la [versión de LTS node.js](https://nodejs.org/en/).
+- Para este proyecto utilizamos la herramienta Visual Studio Code.
+> [!NOTE]
+> Tener en cuenta que, para que el desarrollo de tu proyecto, eres libre de emplear tus herramientas preferidas.
 
-## 1.- Crear el proyecto 
-* Descargar el proyecto .zip ingresando [aquí](https://github.com/izipay-pe/Popin-PaymentForm-React/archive/refs/heads/main.zip) ó clonarlo con git.
-```sh
-git clone https://github.com/izipay-pe/Popin-PaymentForm-React.git
-``` 
+## 3. Despliegue
 
-* Ingrese a la carpeta raiz del proyecto.
+- Ingrese a la carpeta raiz del proyecto.
 
-* Agregue la dependencia **embedded-form-glue** o instale todas las dependencias que necesita el proyecto:
+- Agregue la dependencia **embedded-form-glue** o instale todas las dependencias que necesita el proyecto:
 
 ```sh
 npm install --save @lyracom/embedded-form-glue
@@ -31,17 +46,19 @@ npm install --save @lyracom/embedded-form-glue
 npm install
 ```
 
-* Ejecútelo y pruébelo:
+- Ejecútelo y pruébelo:
+
 ```sh
 npm start
 ```
 
 ver el resultado en http://localhost:3000/
 
-## 2.- Agregar el formulario de pago
+## 4. Datos de conexión
+
 **Nota**: Reemplace **[CHANGE_ME]** con sus credenciales de `API REST` extraídas desde el Back Office Vendedor, ver [Requisitos Previos](#Requisitos_Previos).
 
-* Editar en `public/index.html` en la sección HEAD.
+- Editar en `public/index.html` en la sección HEAD.
 
 ```javascript
 <!-- tema y plugins. debe cargarse en la sección HEAD -->
@@ -52,7 +69,7 @@ href="~~CHANGE_ME_ENDPOINT~~/static/js/krypton-client/V4.0/ext/classic-reset.css
 </script>
 ```
 
-* Edite el componente predeterminado `src/App.js`, con el siguiente codigo si quiere interactuar con el formulario de pago, con un endpoint propio.
+- Edite el componente predeterminado `src/App.js`, con el siguiente codigo si quiere interactuar con el formulario de pago, con un endpoint propio.
 
 ```javascript
 import { useState } from 'react';
@@ -128,7 +145,7 @@ function App() {
 export default App;
 ```
 
-## 2.1.- Verificación de hash de pago
+## 4.1.- Verificación de hash de pago
 
 El hash de pago debe validarse en el lado del servidor para evitar la exposición de su clave hash personal.
 
@@ -171,7 +188,7 @@ function App() {
   const endPoint = "~~CHANGE_ME_ENDPOINT~~";
   const formToken = "~~CHANGE_ME_ENDPOINT~~";
   const server = "http://localhost:3000";
-  
+
   const payment = ()=>{...}
   const getFormToken = (monto, publicKey, domain) => {
     const dataPayment = {
@@ -199,7 +216,7 @@ function App() {
       if (data==="Valid Payment"){
         setIsShow(false);
         alert("Pago Satisfactorio");
-        
+
       }else{
         alert("Pago Inválido");
       }
@@ -209,62 +226,38 @@ function App() {
 (...)
 ```
 
-## 3.- Transacción de prueba
+## 5. Transacción de prueba
 
-El formulario de pago está listo, puede intentar realizar una transacción utilizando una tarjeta de prueba con la barra de herramientas de depuración (en la parte inferior de la página).
+Antes de poner en marcha su pasarela de pago en un entorno de producción, es esencial realizar pruebas para garantizar su correcto funcionamiento.
 
- ![debug](https://github.com/izipay-pe/Embedded-PaymentForm-T1.Net/blob/main/images/tarjetasprueba2.png)
+Puede intentar realizar una transacción utilizando una tarjeta de prueba con la barra de herramientas de depuración (en la parte inferior de la página).
 
-Si intenta pagar, tendrá el siguiente error: **CLIENT_100: Demo form, see the documentation**.
-Es porque el **formToken** es inválido, está definido usando **KR.setFormConfig** y está configurado en **DEMO-TOKEN-TO-BE-REPLACED**.
+<p align="center">
+  <img src="https://i.postimg.cc/3xXChGp2/tarjetas-prueba.png" alt="Formulario"/>
+</p>
 
-you have to create a **formToken** before displaying the payment form using Charge/CreatePayment web-service.
+- También puede encontrar tarjetas de prueba en el siguiente enlace. [Tarjetas de prueba](https://secure.micuentaweb.pe/doc/es-PE/rest/V4.0/api/kb/test_cards.html)
 
-Para obtener más información, eche un vistazo a:
+## 6. Implementación de la IPN
+
+> [!IMPORTANT]
+> Es recomendable implementar la IPN para comunicar el resultado de la solicitud de pago al servidor del comercio.
+
+La IPN es una notificación de servidor a servidor (servidor de Izipay hacia el servidor del comercio) que facilita información en tiempo real y de manera automática cuando se produce un evento, por ejemplo, al registrar una transacción.
+Los datos transmitidos en la IPN se reciben y analizan mediante un script que el vendedor habrá desarrollado en su servidor.
+
+- Ver manual de implementación de la IPN. [Aquí](https://secure.micuentaweb.pe/doc/es-PE/rest/V4.0/kb/payment_done.html)
+- Vea el ejemplo de la respuesta IPN con PHP. [Aquí](https://github.com/izipay-pe/Server-IPN-Php)
+- Vea el ejemplo de la respuesta IPN con NODE.JS. [Aquí](https://github.com/izipay-pe/Server-IPN-JavaScript)
+
+## 7. Personalización
+
+Si deseas aplicar cambios específicos en la apariencia de la pasarela de pago, puedes lograrlo mediante la modificación de código CSS. En este enlace [Código CSS - Incrustado](https://github.com/izipay-pe/Personalizacion-PaymentForm-Incrustado) podrá encontrar nuestro script para un formulario incrustado.
+
+## 8. Consideraciones
+
+Para obtener más información, echa un vistazo a:
 
 - [Formulario incrustado: prueba rápida](https://secure.micuentaweb.pe/doc/es-PE/rest/V4.0/javascript/quick_start_js.html)
 - [Primeros pasos: pago simple](https://secure.micuentaweb.pe/doc/es-PE/rest/V4.0/javascript/guide/start.html)
 - [Servicios web - referencia de la API REST](https://secure.micuentaweb.pe/doc/es-PE/rest/V4.0/api/reference.html)
-
-**NOTA**
-
-1.- Paso de la tienda al modo PRODUCTION 
-
-     Modifique su implementación para utilizar el incrustado en producción:
-     * la contraseña de producción,
-     * clave pública de producción,
-     * la clave HMAC-SHA-256 de producción para calcular la firma contenida en el campo kr-hash.
-     
-2.- No tengo una cuenta activa con Izipay. [Suscribete Aquí](https://online.izipay.pe/comprar/cliente)
-
-   | CARACTERÍSTICAS | VALOR |
-   | ------------- | ------------- |
-   | Usuario de prueba  | 89289758  |
-   | Contraseña de prueba  | testpassword_7vAtvN49E8Ad6e6ihMqIOvOHC6QV5YKmIXgxisMm0V7Eq  |
-   | Clave pública de prueba  | 89289758:testpublickey_TxzPjl9xKlhM0a6tfSVNilcLTOUZ0ndsTogGTByPUATcE  |
-   | Clave HMAC SHA256 de prueba  | fva7JZ2vSY7MhRuOPamu6U5HlpabAoEf8VmFHQupspnXB  |
-   | URL de base  | https://api.micuentaweb.pe |
-   | URL para el cliente JavaScript | https://api.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js  |
-
-## 4.- Gestionar la notificacion de fin de pago (IPN)
-
-IPN son las siglas de Instant Payment Notification (URL de notificación instantánea, en inglés). Al crear una transacción o cambiar su estado, nuestros servidores emitirán una IPN que llamará a una URL de notificación en sus servidores. Esto le permitirá estar informado en tiempo real de los cambios realizados en una transacción.
-
-Las IPN son la única manera de recibir notificaciones en los casos siguientes:
-
-* La conexión a Internet del comprador se ha cortado.
-* El comprador cierra su navegador durante el pago.
-* Se ha rechazado una transacción.
-* El comprador no ha terminado su pago antes de la expiración de su sesión de pago.
-
-Por lo tanto, es obligatorio integrar las IPN.
-
-   <p align="center">
-     <img src="https://github.com/izipay-pe/Embedded-PaymentForm-.Net/raw/main/images/IPN-imagen.png?raw=true" alt="Formulario"/>
-   </p>  
-
-* Ver manual de implementacion de la IPN [Aquí](https://secure.micuentaweb.pe/doc/es-PE/rest/V4.0/kb/payment_done.html)
-
-* Ver el ejemplo de la respuesta IPN con PHP [Aquí](https://github.com/izipay-pe/Redirect-PaymentForm-IpnT1-PHP)
-
-* Ver el ejemplo de la respuesta IPN con NODE.JS [Aquí](https://github.com/izipay-pe/Response-PaymentFormT1-Ipn)
